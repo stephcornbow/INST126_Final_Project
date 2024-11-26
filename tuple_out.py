@@ -48,3 +48,45 @@ def get_user_choice(prompt, choices):
             return choice
         else:
             print("Invalid choice. Please choose from " + str(choices) + ".")  # FIX for ANTI 0.1.1: Replaced f-string with string concatenation
+
+def play_turn(player, scores, target_score):
+    """
+    Executes a single turn for a player.
+
+    Args:
+        player (str): The name of the current player.
+        scores (dict): The current scores of all players.
+        target_score (int): The score needed to win the game.
+    """
+    print("\n" + player + "'s turn:")  # FIX for ANTI 0.1.1: Replaced f-string with string concatenation
+    fixed_dice = []
+    total_points = 0
+
+    while True:
+        num_dice_to_roll = 3 - len(fixed_dice)
+        current_roll = roll_dice(num_dice_to_roll)
+        print(player + " rolled: " + str(current_roll + fixed_dice))  # FIX for ANTI 0.1.1: Replaced f-string with string concatenation
+
+        # Count occurrences of each die using Counter
+        counts = Counter(current_roll + fixed_dice)
+
+        # Check for tuples
+        if any(count == 3 for count in counts.values()):
+            print(player + " has tupled out! Scores 0 points this turn.")  # FIX for ANTI 0.1.1: Replaced f-string with string concatenation
+            return
+
+        # Fix dice with two of the same value
+        new_fixed = [die for die, count in counts.items() if count == 2]
+        if new_fixed:
+            fixed_dice = new_fixed
+            print("Fixed dice: " + str(fixed_dice))  # FIX for ANTI 0.1.1: Replaced f-string with string concatenation
+
+        total_points = sum(current_roll) + sum(fixed_dice)
+        print("Total points this turn: " + str(total_points))  # FIX for ANTI 0.1.1: Replaced f-string with string concatenation
+
+        # Ask to continue or stop
+        choice = get_user_choice("Do you want to (r)eroll or (s)top? ", ['r', 's'])
+        if choice == 's':
+            scores[player] += total_points
+            print(player + " ends their turn with " + str(total_points) + " points.")  # FIX for ANTI 0.1.1: Replaced f-string with string concatenation
+            return
