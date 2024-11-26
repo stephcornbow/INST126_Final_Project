@@ -126,6 +126,8 @@ def main():
     winner = max(scores, key=scores.get)
     print("\nCongratulations " + winner + "! You win the game.")
 
+if __name__ == "__main__":
+    main()
 
 ##############################################################################
 # FIXING ANTIPATTERNS
