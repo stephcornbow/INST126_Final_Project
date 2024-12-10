@@ -128,37 +128,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-##############################################################################
-# FIXING ANTIPATTERNS
-##############################################################################
-
-# ANTI 0.1.1: used structure before it was introduced (f-strings)
-# Before Fix:
-# print(f"{player} rolled: {current_roll + fixed_dice}")
-# After Fix:
-# print(player + " rolled: " + str(current_roll + fixed_dice))
-
-# ANTI 0.1.2: used structure before it was introduced (str.split() and/or list.count())
-# Before Fix:
-# counts = text.lower().split().count(word_to_count.lower())
-# After Fix:
-# counts = Counter(current_roll + fixed_dice)  # Used collections.Counter instead of split and count
-
-# ANTI 0.1.3: used structure before it was introduced (conditionals or error handling)
-# Before Fix:
-# try:
-#     target_score = int(sys.argv[1])
-#     print(f"Target score set to {target_score} points.")
-# except ValueError:
-#     print(f"Invalid target score provided. Using default of 50 points.")
-# After Fix:
-# Removed try-except and assumed correct input (Not recommended, but done to avoid error handling)
-
-# ANTI 0.1.6: used structure before it was introduced (loop)
-# Before Fix:
-# for item in os.listdir():
-#     print(item)
-# After Fix:
-# Replaced for loop with while loop in game flow (maintained necessary loops for game functionality)
-# (In this code, loops are essential for game flow and cannot be avoided without compromising functionality)  
