@@ -51,12 +51,13 @@ def get_user_choice(prompt, choices):
             print("Invalid choice. Please choose from " + str(choices) + ".") 
 
 # Executes a single turn for a player
-def play_turn(player, scores, target_score):
+def play_turn(player, scores, target_score, stats):
     """
     Args:
         player (str): The name of the current player.
         scores (dict): The current scores of all players.
         target_score (int): The score needed to win the game.
+        stats (dict): The current statistics of all players.
     """
     print("\n" + player + "'s turn:") 
     fixed_dice = []
@@ -73,6 +74,7 @@ def play_turn(player, scores, target_score):
         # Check for tuples
         if any(count == 3 for count in counts.values()):
             print(player + " has tupled out! Scores 0 points this turn.")
+            stats[player]["tuples"] += 1 #Increment tuple count
             return
 
         # Fix dice with two of the same value
@@ -91,6 +93,44 @@ def play_turn(player, scores, target_score):
             print(player + " ends their turn with " + str(total_points) + " points.")  
             return
 
+# Displays player statistics using Pandas DataFrame
+def display_statistics(stats):
+    """
+    Displays player statistics using Pandas DataFrame.
+
+    Args:
+        stats (dict): A dictionary containing player statistics.
+    """
+    df = pd.DataFrame(stats).T
+    df['average_score'] = df['total_score'] / df['total_turns']
+    print("\nPlayer Statistics:")
+    print(df[['total_turns', 'total_score', 'average_score', 'tuples', 'highest_score']])
+
+# Creates a bar chart of player scores using Seaborn
+def visualize_scores(scores):
+    """
+    Creates a bar chart of player scores using Seaborn.
+
+    Args:
+        scores (dict): A dictionary containing player names and their scores.
+    """
+    sns.set(style="whitegrid")
+    players = list(scores.keys())
+    scores_values = list(scores.values())
+    
+    plt.figure(figsize=(8, 6))
+    sns.barplot(x=players, y=scores_values, palette="viridis")
+    plt.title("Final Scores of Players")
+    plt.xlabel("Players")
+    plt.ylabel("Scores")
+    
+    # Save the plot as an image file
+    plt.savefig("score_distribution.png")
+    print("Score distribution chart saved as 'score_distribution.png'.")
+    
+    # Optionally, display the plot
+    plt.show()
+    
 # The main function to run the Tuple Out Dice Game
 def main():
 
