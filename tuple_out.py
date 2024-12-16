@@ -8,6 +8,9 @@ import random
 import sys    
 from collections import Counter 
 import utils
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
 
 # Rolls a specified number of dice and returns the results as a list
 def roll_dice(num_dice=3):
