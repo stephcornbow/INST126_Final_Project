@@ -2,7 +2,7 @@
 
 ## Overview
 
-**Tuple Out** is a simple dice game where players take turns rolling dice to score points. The objective is to be the first to reach a target score or to have the highest score after a set number of turns.
+**Tuple Out** is a dice game where players take turns rolling dice to score points. The objective is to be the first to reach a target score or to have the highest score after a set number of turns.
 
 ## Features
 
@@ -10,10 +10,20 @@
 - **Customizable Target Score:** Set a custom target score via command-line arguments.
 - **High Score Tracking:** The game records and saves the highest scores achieved by each player.
 - **Interactive Gameplay:** Choose to re-roll non-fixed dice or stop to secure your points each turn.
+- **Score Visualization:** Automatically showcasing a bar chart with final scores.
 
 ## Requirements
 
 - Python 3.x
+- Libraries:
+    - 'pandas'
+    - 'seaborn'
+    - 'matplotlib'
+
+To install, run:
+```bash
+pip install pandas seaborn matplotlib
+```
 
 ## Installation
 
@@ -41,24 +51,10 @@ python tuple_out.py [target_score]
 
 - **`target_score` (optional):** An integer representing the score a player needs to reach to win the game.
 
-**Examples:**
-
-1. **Default Target Score (50 points):**
-
-   ```bash
-   python tuple_out.py
-   ```
-
-2. **Custom Target Score (e.g., 100 points):**
-
-   ```bash
-   python tuple_out.py 100
-   ```
-
 ### Gameplay Instructions
 
 1. **Starting the Game:**
-   - Upon starting, the game welcomes you and displays the target score.
+   - The game welcomes you and displays the target score.
 
 2. **Taking Turns:**
    - Players take turns to roll three dice.
@@ -69,11 +65,22 @@ python tuple_out.py [target_score]
 
 3. **Winning the Game:**
    - The first player to reach or exceed the target score wins the game.
-   - High scores are saved and can be viewed in the `high_scores.json` file.
+   - Final player statistics and scores are displayed.
+   - A bar chart visualizing player scores is generated.
 
 ## High Scores
 
 The game maintains a `high_scores.json` file that records the highest score achieved by each player. This file is automatically updated at the end of each game.
+
+## Player Statistics
+
+Player statistics are tracked and displayed at the end of the game:
+
+- **Total Turns:** Number of turns taken by the player.
+- **Total Score:** Cumulative score achieved.
+- **Average Score:** Average points per turn.
+- **"Tuple Outs":** Number of times a player rolled three matching dice.
+- **Highest Score:** Highest score achieved during the game.
 
 ## Code Structure
 
@@ -81,3 +88,7 @@ The game maintains a `high_scores.json` file that records the highest score achi
 - **`utils.py`:** Contains utility functions for saving and loading high scores.
 - **`high_scores.json`:** JSON file that stores high scores for each player.
 - **`README.md`:** This readme file with instructions and information about the game.
+
+## License
+
+This project is licensed under the MIT License.
