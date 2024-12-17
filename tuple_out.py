@@ -130,7 +130,7 @@ def visualize_scores(scores):
     
     # Optionally, display the plot
     plt.show()
-    
+
 # The main function to run the Tuple Out Dice Game
 def main():
 
@@ -148,16 +148,43 @@ def main():
     players = ["Player 1", "Player 2"]  
     scores = {player: 0 for player in players}  
 
-    # Display scores of players at the end of each turn
-    while all(score < target_score for score in scores.values()):  
-        for player in players:
-            play_turn(player, scores, target_score)
-            display_scores(scores)
+    # Initialize player statistics
+    stats = utils.load_player_stats()
+    for player in players:
+        if player not in stats:
+            stats[player] = {
+                "total_turns": 0,
+                "total_score": 0,
+                "tuples": 0,
+                "highest_score": 0
+            }
 
-            # Display final scores
+    # Display scores of players at the end of each turn
+    while all(score < target_score for score in scores.values()):
+        for player in players:
+            stats[player]["total_turns"] += 1  # Increment total turns
+            play_turn(player, scores, target_score, stats)
+            display_scores(scores)
+            
+            # Update stats
+            stats[player]["total_score"] = scores[player]
+            if scores[player] > stats[player]["highest_score"]:
+                stats[player]["highest_score"] = scores[player]
+            
+            # Save stats after each turn
+            utils.save_player_stats(stats)
+            
+            # Display final scores and statistics
             if scores[player] >= target_score:
-                print("\n" + player + " has reached " + str(target_score) + " points and wins the game!")  
-                utils.save_high_score(player, scores[player])  
+                print("\n" + player + " has reached " + str(target_score) + " points and wins the game!")
+                utils.save_high_score(player, scores[player])
+                
+                # Display statistics
+                display_statistics(stats)
+                
+                # Visualize scores
+                visualize_scores(scores)
+                
                 return
 
     # Using a tuple to display final scores
